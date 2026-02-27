@@ -7,6 +7,8 @@ import AdsCreateSchema from "../../model/ads-create-schema"
 import { setAdsError, updateAds } from "../../model/ads-slice"
 import type { AdsResponseType, AdsTypeWithoutID } from '../../types/ads-type'
 
+import s from './index.module.css'
+
 type AdsUpdateFormProps = {
     ad: AdsResponseType
     open: boolean
@@ -27,7 +29,7 @@ function AdsUpdateForm({ ad, open, onClose }: AdsUpdateFormProps) {
     } = useForm(
         {
             resolver: zodResolver(AdsCreateSchema),
-            defaultValues: {...ad,imageUrl: "" }
+            defaultValues: {...ad, imageUrl: "" }
         }
     )
  
@@ -42,56 +44,50 @@ function AdsUpdateForm({ ad, open, onClose }: AdsUpdateFormProps) {
     }
 
     return (
-        <Modal open={open} onClose={onClose} title="Форма создания объявления!">
-            <div className='ads-create-form'>
+<Modal open={open} onClose={onClose} title="Форма обновления объявления!">
+    <div className={s.ads__form}>
+        {error === "Cannot destructure property 'data' of '(intermediate value)' as it is undefined." ? <p className="error">Повторно авторизуйтесь!</p> : <p className="error">{error}</p>}
 
-                {
-                    error && <p className="error">{error} </p>
-                }
-
-                <form onSubmit={handleSubmit(onSubmit)}>
-                    <label htmlFor="title"> Название  <span className="required">* </span></label>
-                    <input type="text" id="title" {...register("title")}></input>
-                    {
-                        errors.title && <p className="error">{errors.title.message} </p>
-                    }
-
-                    <label htmlFor="description"> Описание <span className="required">* </span></label>
-                    <input type="text" id="description" {...register("description")}></input>
-                    {
-                        errors.description && <p className="error">{errors.description.message} </p>
-                    }
-
-
-                    <label htmlFor="price"> Цена</label>
-                    <input type="number" id="price" {...register("price")}></input>
-                    {
-                        errors.price && <p className="error">{errors.price.message} </p>
-                    }
-
-                    <label htmlFor="categoryId"> Категория </label>
-                    <select id="categoryId" {...register("categoryId")}>
-                        <option value={""}>Выберите категорию</option>
-                        {
-                            categories.map(category => <option key={category.id} value={category.id}>{category.name} </option>)
-                        }
-                    </select>
-
-                    {
-                        errors.categoryId && <p className="error">{errors.categoryId.message} </p>
-                    }
-
-                    <label htmlFor="imageUrl"> Картинка</label>
-                    <input type="text" id="imageUrl" {...register("imageUrl")}></input>
-                    {
-                        errors.imageUrl && <p className="error">{errors.imageUrl.message} </p>
-                    }
-
-
-                    <button type="submit"> {isLoading ? "Создается" : "Создать"} </button>
-                </form>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <div className={s.form_group}>
+                <label htmlFor="title">Название <span className={s.required}>*</span></label>
+                <input type="text" id="title" {...register("title")} className={s.input} />
+                {errors.title && <p className="error">{errors.title.message}</p>}
             </div>
-        </Modal>
+
+            <div className={s.form_group}>
+                <label htmlFor="description">Описание <span className={s.required}>*</span></label>
+                <input type="text" id="description" {...register("description")} className={s.input} />
+                {errors.description && <p className="error">{errors.description.message}</p>}
+            </div>
+
+            <div className={s.form_group}>
+                <label htmlFor="price">Цена</label>
+                <input type="number" id="price" {...register("price")} className={s.input} />
+                {errors.price && <p className="error">{errors.price.message}</p>}
+            </div>
+
+            <div className={s.form_group}>
+                <label htmlFor="categoryId">Категория  <span className={s.required}>*</span></label>
+                <select id="categoryId" {...register("categoryId")} className={s.select}>
+                    <option value={""}>Выберите категорию</option>
+                    {categories.map(category => <option key={category.id} value={category.id}>{category.name}</option>)}
+                </select>
+                {errors.categoryId && <p className="error">{errors.categoryId.message}</p>}
+            </div>
+
+            <div className={s.form_group}>
+                <label htmlFor="imageUrl">Картинка</label>
+                <input type="text" id="imageUrl" {...register("imageUrl")} className={s.input} />
+                {errors.imageUrl && <p className="error">{errors.imageUrl.message}</p>}
+            </div>
+
+            <button type="submit" className={s.submit_btn}>
+                {isLoading ? "Обновляется" : "Обновить"}
+            </button>
+        </form>
+    </div>
+</Modal>
     )
 }
 

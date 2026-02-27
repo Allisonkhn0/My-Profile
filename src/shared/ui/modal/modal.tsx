@@ -1,5 +1,5 @@
 import type { JSX } from "react";
-import './model.css'
+import s from './modal.module.css'
 
 type ModalProps = {
   open: boolean;
@@ -8,27 +8,19 @@ type ModalProps = {
   children: JSX.Element;
 }
 
-
 function Modal({ open, onClose, title, children }: ModalProps): JSX.Element | undefined {
-
-
   if (!open) return undefined;
 
-
-  return (<div className="modal-overlay">
-    <div className="modal">
-
-      <div className="header">
-        {title}
+  return (
+      <div className={s.modal} onClick={(e) => e.stopPropagation()}>
+        <div className={s.modal_header}>
+          <h3 className={s.header}>{title}</h3>
+          <button className={s.modal__close} onClick={onClose}>❌</button>
+        </div>
+        <div className={s.modal__body}>
+          {children}
+        </div>
       </div>
-
-      <span className="modal__close" onClick={onClose}>❌</span>
-      <div className="modal__body">
-        {children}
-      </div>
-    </div>
-
-  </div>
   )
 }
 

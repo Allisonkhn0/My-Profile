@@ -6,6 +6,8 @@ import { store } from './shared/lib/store'
 import ToastProvider from './shared/toast/toast-provider/toast-provider'
 import ToastContainer from './shared/toast/ui/toast-container'
 
+import './index.css'
+
 
 createRoot(document.querySelector('#root')!).render(
   <Provider store={store}>

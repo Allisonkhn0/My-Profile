@@ -5,6 +5,8 @@ import { loadAds, setAdsError, setAdsLoading } from "../../model/ads-slice"
 import AdsCreateForm from "../ads-create-item/ads-create-form"
 import AdsItem from "../ads-item/ads-item"
 
+import s from './index.module.css'
+
 function AdsList() {
     const dispatch = useAppDispatch()
     const { user } = useAppSelector(state => state.auth)
@@ -21,7 +23,7 @@ function AdsList() {
     }, [dispatch])
 
     return (
-        <div className="ads-list">
+        <div className={s.ads_list}>
             {
                 user && (
                     <AdsCreateForm />       

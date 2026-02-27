@@ -6,6 +6,7 @@ import AdsApi from "../../api/ads-api"
 import AdsCreateSchema from "../../model/ads-create-schema"
 import { createAds, setAdsError } from "../../model/ads-slice"
 import type { AdsTypeWithoutID } from "../../types/ads-type"
+import { useAuth } from "@/feature/auth/hooks/use-auth"
 
 
 function AdsCreateForm() {
@@ -16,6 +17,7 @@ function AdsCreateForm() {
     const { categories } = useAppSelector(state => state.categories)
 
     const dispatch = useAppDispatch()
+    const { logout } = useAuth()
 
     const {
         register,
@@ -38,15 +40,16 @@ function AdsCreateForm() {
             dispatch(setAdsError(error instanceof Error ? error?.message : "Не удалось создать"))
             show("Ошибка ", "error")
         }
-
     }
+
+    if (error === "Cannot destructure property 'data' of '(intermediate value)' as it is undefined.") logout()
 
     return (
         <div className='ads-create-form'>
             <h1>Форма создания объявления</h1>
-            {
-                error && <p className="error">{error} </p>
-            }
+            {error === "Cannot destructure property 'data' of '(intermediate value)' as it is undefined." ?
+            <p className="error">Повторно авторизуйтесь!</p> :
+            <p className="error">{error}</p>}
 
             <form onSubmit={handleSubmit(onSubmit)}>
                 <label htmlFor="title"> Название  <span className="required">* </span></label>

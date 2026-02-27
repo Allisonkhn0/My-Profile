@@ -13,6 +13,7 @@ function Header() {
         await logout()
         navigate("/")
     }
+    
     return (
         <nav>
             {/* guest */}
